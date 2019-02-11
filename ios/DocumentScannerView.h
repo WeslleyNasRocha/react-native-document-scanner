@@ -12,6 +12,7 @@
 @property (nonatomic, assign) BOOL saveOnDisk;
 @property (nonatomic, assign) BOOL captureMultiple;
 @property (copy, nonatomic, getter=getLastCapture, setter=setLastCapture:) NSDate * lastCapture;
+@property (nonatomic, assign) NSInteger timeBetweenCaptures;
 
 - (void) capture;
 
