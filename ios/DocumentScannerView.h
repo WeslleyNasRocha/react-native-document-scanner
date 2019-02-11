@@ -11,6 +11,7 @@
 @property (nonatomic, assign) BOOL useBase64;
 @property (nonatomic, assign) BOOL saveOnDisk;
 @property (nonatomic, assign) BOOL captureMultiple;
+@property (copy, nonatomic, getter=getLastCapture, setter=setLastCapture:) NSDate * lastCapture;
 
 - (void) capture;
 

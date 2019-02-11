@@ -8,6 +8,7 @@
     if (self) {
         [self setEnableBorderDetection:YES];
         [self setDelegate: self];
+        [self setLastCapture:[NSDate date]];
     }
 
     return self;
@@ -28,7 +29,9 @@
     }
 
     if (self.stableCounter > self.detectionCountBeforeCapture){
+      if ([self.getLastCapture isEqualToDate:[self.getLastCapture earlierDate:[NSDate date]]] ) {
         [self capture];
+      }
     }
 }
 
@@ -59,6 +62,7 @@
                                      } : [NSNull null];
 
             if (self.useBase64) {
+              [self setLastCapture:[NSDate dateWithTimeIntervalSinceNow:self.timeBetweenCaptures]];
               self.onPictureTaken(@{
                                     @"croppedImage": [croppedImageData base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength],
                                     @"initialImage": [initialImageData base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength],
@@ -77,7 +81,7 @@
 
                [[NSFileManager defaultManager] createFileAtPath:croppedFilePath contents:croppedImageData attributes:nil];
                [[NSFileManager defaultManager] createFileAtPath:initialFilePath contents:initialImageData attributes:nil];
-              
+               [self setLastCapture:[NSDate dateWithTimeIntervalSinceNow:self.timeBetweenCaptures]];
                self.onPictureTaken(@{
                                      @"croppedImage": croppedFilePath,
                                      @"initialImage": initialFilePath,
@@ -88,7 +92,7 @@
 
               [croppedImageData writeToFile:croppedFilePath atomically:YES];
               [initialImageData writeToFile:initialFilePath atomically:YES];
-
+                [self setLastCapture:[NSDate dateWithTimeIntervalSinceNow:self.timeBetweenCaptures]];
                 self.onPictureTaken(@{
                                      @"croppedImage": croppedFilePath,
                                      @"initialImage": initialFilePath,
